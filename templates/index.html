@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Image upload</title>
+    <script src={% static 'js/jquery.js' %}></script>
+    <script src={% static 'js/dropzone/dist/dropzone.js' %}></script>
+    <script>
+        Dropzone.autoDiscover = false;
+        let dropzone = null;
+        window.onload = function () {
+            dropzone = new Dropzone('#drop-div', {
+                url: "/image",
+                addRemoveLinks: false,
+                autoProcessQueue: false,
+                init: function () {
+                    this.on('success', function (response) {alert('Файл успешно загружен'); window.location.reload()});
+                    this.on('error', function (data, response) {
+                        alert('Ошибка при загрузке файла: ' + response.msg);
+                    });
+                }
+            });
+        };
+        function upload_file() {
+            dropzone.processQueue();
+        }
+
+
+    </script>
+    <style>
+        .my-form {
+            width: 300px;
+            height: 300px;
+        }
+        #drop-div {
+            width: 100%;
+            height: 200px;
+            border: 2px solid black;
+        }
+    </style>
+</head>
+<body>
+    <h1>Всего файлов в базе: {{ count }}</h1>
+    <h1>Доступные к загрузке расширения:</h1>
+    <div>
+        {% for ext in extensions %}
+            <h3>{{ ext }}</h3>
+        {% endfor %}
+    </div>
+    <div>
+    <form enctype="multipart/form-data" class="my-form" action="">
+        <div id="drop-div" class="dropzone">
+        </div>
+    </form>
+    <button style="alignment: bottom" onclick="upload_file()">upload</button>
+        </div>
+</body>
+</html>
