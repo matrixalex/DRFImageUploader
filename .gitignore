@@ -117,9 +117,6 @@ myvenv/
 uwsgi_params.conf
 dpl/
 
-# settings
-*/settings.py
-
 # migrations
 migrations/
 
